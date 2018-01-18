@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="header">
-      <h1>TITLE</h1>
+      <h1>Token提交与Flexible适配方案</h1>
     </div>
     <div class="wrap">
       <router-view></router-view>
@@ -22,19 +22,19 @@ html, body, #app {
 }
 
 .header {
-  width: 100%;
   background: black;
   h1 {
+    text-align: center;
+    font-size: .466667rem;
+    line-height: 2;
+    padding-left: .133333rem;
+    padding-top: .066667rem;
     margin: 0;
-    padding: 10px;
     color: white;
   }
 }
 .wrap {
-  width: 1200px;
-  height: calc(100% - 56px);
   margin: 0 auto;
   text-align: center;
-  overflow-y: auto;
 }
 </style>

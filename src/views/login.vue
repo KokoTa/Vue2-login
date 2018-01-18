@@ -2,7 +2,8 @@
   <div class="wrap-login">
     <input class="wrap-input" type="text" v-model.trim="token">
     <button class="wrap-btn" @click='login'>提交</button>
-    <a href="https://github.com/settings/tokens/new" target="_blank" class="wrap-a">获得一个token</a>
+    <a href="https://github.com/settings/tokens/new" target="_blank" class="wrap-a">获取token</a>
+    <!-- 1f3d7a64e8a8c4cbca80e8d4374a7407c89a48e4 -->
   </div>  
 </template>
 
@@ -31,34 +32,31 @@ export default {
 
 
 <style lang="scss" scoped>
-  .wrap-input {
-    font-size: 12px;
-    width: 200px;
-    line-height: 24px;
-    padding: 0 10px;
-    border: 2px solid gray;
-    outline: none;
-    border-radius: 10px;
-    margin: 10px;
-    box-sizing: border-box;
-  }
-  .wrap-btn, .wrap-a {
-    line-height: 24px;
-    border: 1px solid gray;
-    outline: none;
-    border-radius: 10px;
-    background: #fff;
-    color: gray;
-    cursor: pointer;
-    padding: 0px 10px;
-    &:active {
-      background: black;
-      color: #fff;
-    }
-  }
-  .wrap-a {
-    text-decoration: none;
-  }
+.wrap-input {
+  font-size: 12px;
+  width: 200px;
+  line-height: 24px;
+  padding: 0 10px;
+  border: 2px solid gray;
+  outline: none;
+  border-radius: 10px;
+  margin: 10px;
+  box-sizing: border-box;
+}
+.wrap-btn, .wrap-a {
+  display: block;
+  margin: 0 auto;
+  width: 2.666667rem;
+  line-height: .666667rem;
+  margin-bottom: .2rem;
+  border: none;
+  background: black;
+  color: #fff;
+  cursor: pointer;
+}
+.wrap-a {
+  text-decoration: none;
+}
 </style>
 
 

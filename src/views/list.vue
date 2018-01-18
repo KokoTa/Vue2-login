@@ -1,5 +1,23 @@
 <template>
-  <button @click="loginout">Login out</button>
+  <div class="wrap-list">
+    <ul class="list">
+      <li v-for="(value, key) in listData" :key="key" class="list-item">
+        <div class="list-left">
+          <a :href="value.owner.url">
+            <img :src="value.owner.avatar_url" alt="#">
+          </a>
+        </div>
+        <div class="list-right">
+          <div class="list-header">
+            <span class="list-name">{{ value.name }}</span>
+            <span class="list-lang">{{ value.language }}</span>
+          </div>
+          <a :href="value.url"><button class="list-btn">查看项目</button></a>
+        </div>
+      </li>
+    </ul>
+    <button @click="loginout" class="login-btn">Login out</button>
+  </div>
 </template>
 
 <script>
@@ -7,14 +25,25 @@ export default {
   name: 'list',
   data() {
     return {
-
+      listData: [],
     };
   },
   methods: {
     getData() {
       this.axios.get('/user/repos', {
         sort: 'updated',
-      }).then(res => console.log(res));
+      }).then((res) => {
+        console.log(res.data);
+        this.listData = res.data;
+        // 等待DOM更新后进行操作
+        this.$nextTick(() => {
+          document.querySelectorAll('.list-item').forEach((item, index) => {
+            setTimeout(() => {
+              item.classList.add('show');
+            }, index * 100);
+          });
+        });
+      });
     },
     loginout() {
       this.$store.commit('loginout');
@@ -29,7 +58,82 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@mixin font-dpr($font-size){
+    font-size: $font-size;
+    [data-dpr="2"] & {
+        font-size: $font-size * 2;
+    }
+    [data-dpr="3"] & {
+        font-size: $font-size * 3;
+    }
+}
 
+.wrap-list {
+  .list-item {
+    height: 1.6rem;
+    background: lightblue;
+    margin: .133333rem;
+    padding: .066667rem;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+
+    transition: all .5s ease;
+    visibility: hidden;
+    opacity: 0;
+    
+    .list-left {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: .64rem;
+      }
+    }
+    .list-right {
+      flex: 10;
+      text-align: left;
+      .list-header {
+        @include font-dpr(.32rem);
+        display: flex;
+        padding: .133333rem;
+        .list-name, .list-lang {
+          flex: 1;
+        }
+      }
+      .list-btn {
+        @include font-dpr(.186667rem);
+        width: 1.6rem;
+        line-height: .426667rem;
+        margin-left: .133333rem;
+        margin-top: .133333rem;
+        padding: .066667rem;
+        background: lightcyan;
+        color: gray;
+        border: none;
+        outline: none;
+        border-radius: .066667rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .show {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .login-btn {
+    width: 2.666667rem;
+    height: .666667rem;
+    margin-bottom: .333333rem;
+    border: none;
+    background: black;
+    color: #fff;
+    cursor: pointer;
+  }
+}
 </style>
 
 
