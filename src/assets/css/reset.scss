@@ -1,6 +1,9 @@
 .wrap-login, .wrap-list {
   width: 100%;
   height: calc(100% - .8rem);
-  overflow-y: scroll;
   position: absolute;
+  background: lightcyan;
+}
+.wrap-list {
+  overflow-y: scroll;
 }
