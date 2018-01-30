@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap-list">
+  <div class="wrap-list" @scroll="getNewData($el)">
     <ul class="list">
       <li v-for="(value, key) in listData" :key="key" class="list-item">
         <div class="list-left">
@@ -26,22 +26,44 @@ export default {
   data() {
     return {
       listData: [],
+      throttleFlag: true,
+      throttleSettimeout: null,
     };
   },
   methods: {
+    getNewData(el) {
+      const oldScrollHeight = el.scrollHeight;
+      if (el.scrollTop === 0 && this.throttleFlag) {
+        // 闭流
+        this.throttleFlag = false;
+        // 获取数据
+        this.getData()
+          .then(() => {
+            const nowScrollHeight = el.scrollHeight;
+            el.scrollTop = nowScrollHeight - oldScrollHeight;
+            // 开流
+            setTimeout(() => {
+              this.throttleFlag = true;
+            }, 500);
+          });
+      }
+    },
     getData() {
-      this.axios.get('/user/repos', {
+      return this.axios.get('/user/repos', {
         sort: 'updated',
       }).then((res) => {
-        console.log(res.data);
-        this.listData = res.data;
+        this.listData.splice(0, 0, ...res.data);
         // 等待DOM更新后进行操作
         this.$nextTick(() => {
-          document.querySelectorAll('.list-item').forEach((item, index) => {
-            setTimeout(() => {
-              item.classList.add('show');
-            }, index * 100);
-          });
+          const itemsData = this.listData;
+          const itemsDom = document.querySelectorAll('.list-item');
+          for (let i = 0; i < itemsData.length; i += 1) {
+            if (!('bgColor' in itemsData[i])) {
+              const randomColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor((Math.random() * 6) + 5)})`;
+              itemsData[i].bgColor = randomColor;
+            }
+            itemsDom[i].style.background = itemsData[i].bgColor;
+          }
         });
       });
     },
@@ -77,11 +99,6 @@ export default {
     border-radius: 10px;
     overflow: hidden;
     display: flex;
-
-    transition: all .5s ease;
-    visibility: hidden;
-    opacity: 0;
-    
     .list-left {
       flex: 2;
       display: flex;
@@ -117,11 +134,6 @@ export default {
         cursor: pointer;
       }
     }
-  }
-
-  .show {
-    visibility: visible;
-    opacity: 1;
   }
   
   .login-btn {

@@ -36,7 +36,7 @@ axios.interceptors.response.use(
     if (error.response) {
       if (error.response.status === 401) {
         store.commit('loginout'); // 清除token
-        router.replace('/login'); // 跳转至登录页
+        router.push('/login'); // 跳转至登录页
         console.log('请求失败，清除这个无效的token，跳转至登录页');
       }
     }
